@@ -1,4 +1,4 @@
-package com.vgdc.team4;
+package uci.vgdc.team4;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 
