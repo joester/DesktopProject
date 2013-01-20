@@ -4,6 +4,6 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 
 public class DeskMain {
 	public static void main(String[] args) {
-		new LwjglApplication(new DaGame(), "dog", 512, 512, true);
+		new LwjglApplication(new Game(), "dog", 512, 512, true);
 	}
 }

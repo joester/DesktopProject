@@ -17,7 +17,7 @@ public class Game implements ApplicationListener{
 	public void create() {
 		// TODO Auto-generated method stub
 		
-		tex = new Texture(Gdx.files.internal("data/dog.jpg"));
+		tex = new Texture(Gdx.files.internal("data/NicCageFace.jpg"));
 		effect = Gdx.audio.newSound(Gdx.files.internal("data/sound.wav"));
 		
 		Gdx.app.log("create()", "I CAN DRAW DOG");
