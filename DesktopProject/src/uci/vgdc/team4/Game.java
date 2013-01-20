@@ -21,7 +21,6 @@ public class Game implements ApplicationListener{
 		effect = Gdx.audio.newSound(Gdx.files.internal("data/sound.wav"));
 		
 		Gdx.app.log("create()", "I CAN DRAW DOG");
-		
 	}
 
 	@Override
