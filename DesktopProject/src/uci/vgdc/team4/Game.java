@@ -11,6 +11,7 @@ public class Game implements ApplicationListener{
 	 */
 
 	Texture tex;
+	Texture tex2;
 	Sound effect;
 	
 	@Override
@@ -18,6 +19,7 @@ public class Game implements ApplicationListener{
 		// TODO Auto-generated method stub
 		
 		tex = new Texture(Gdx.files.internal("data/NicCageFace.jpg"));
+		tex2 = new Texture(Gdx.files.internal("data/dog.jpg"));
 		effect = Gdx.audio.newSound(Gdx.files.internal("data/sound.wav"));
 		
 		Gdx.app.log("create()", "I CAN DRAW DOG");
@@ -27,6 +29,7 @@ public class Game implements ApplicationListener{
 	public void dispose() {
 		// TODO Auto-generated method stub
 		tex.dispose();
+		tex2.dispose();
 		effect.dispose();
 	}
 
@@ -42,6 +45,7 @@ public class Game implements ApplicationListener{
 		SpriteBatch sprites = new SpriteBatch();
 		sprites.begin();
 		sprites.draw(tex, 0, 0);
+		sprites.draw(tex2, 0, 200);
 		sprites.end();
 		if(Gdx.input.justTouched()){
 			effect.play(.7f);
