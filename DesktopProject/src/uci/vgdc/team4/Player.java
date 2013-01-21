@@ -8,8 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 public class Player extends Entity{
 		
 	public Player(int hp, float speed, Point position, Vector2 velocity,
-			Sprite sheet) {
-		super(hp, speed, position, velocity, sheet);
+			Sprite sheet, int sWidth, int sHeight) {
+		super(hp, speed, position, velocity, sheet, sHeight, sHeight); 
 		// TODO Auto-generated constructor stub
 	}
 

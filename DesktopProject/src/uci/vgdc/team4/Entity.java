@@ -13,7 +13,7 @@ public abstract class Entity extends Actor{
 	public Vector2 velocity;
 	public Sprite sheet;
 	
-	public Entity(int hp, float speed, Point position, Vector2 velocity, Sprite sheet){
+	public Entity(int hp, float speed, Point position, Vector2 velocity, Sprite sheet, int sWidth, int sHeight){
 		this.hp = hp;
 		this.speed = speed;
 		this.position = position;
