@@ -1,4 +1,6 @@
 package uci.vgdc.team4;
+import uci.vgdc.team4.timer.GameTimer;
+
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,14 +11,18 @@ public class Game implements ApplicationListener{
 	/**
 	 * @param args
 	 */
-
+	
 	Texture tex;
 	Texture tex2;
 	Sound effect;
 	
+	GameTimer timer;
+	
 	@Override
-	public void create() {
+	public void create() {		
 		// TODO Auto-generated method stub
+		this.timer = new GameTimer(120);
+		timer.start();
 		
 		tex = new Texture(Gdx.files.internal("data/NicCageFace.jpg"));
 		tex2 = new Texture(Gdx.files.internal("data/dog.jpg"));
@@ -41,7 +47,13 @@ public class Game implements ApplicationListener{
 
 	@Override
 	public void render() {
-		// TODO Auto-generated method stub
+		/* Get DT */
+		float dt = Gdx.graphics.getDeltaTime();
+		
+		/* Update */
+		timer.update(dt);
+		
+		/* Draw */
 		SpriteBatch sprites = new SpriteBatch();
 		sprites.begin();
 		sprites.draw(tex, 0, 0);
@@ -50,6 +62,8 @@ public class Game implements ApplicationListener{
 		if(Gdx.input.justTouched()){
 			effect.play(.7f);
 		}
+		
+		System.out.println(timer.time());
 	}
 
 	@Override
