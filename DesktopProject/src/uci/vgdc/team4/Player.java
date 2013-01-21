@@ -3,6 +3,7 @@ package uci.vgdc.team4;
 import java.awt.Point;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public class Player extends Entity{
@@ -19,10 +20,24 @@ public class Player extends Entity{
 		
 	}
 
+
 	@Override
-	public void render() {
+	public void render(SpriteBatch batch) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void create() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

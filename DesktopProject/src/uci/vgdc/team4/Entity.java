@@ -24,4 +24,6 @@ public abstract class Entity extends Actor{
 	
 	public abstract void update(float dt);
 	public abstract void render(SpriteBatch batch);
+	public abstract void create();
+	public abstract void dispose();
 }

@@ -35,4 +35,17 @@ public class Enemy extends Entity{
 		
 	}
 
+	@Override
+	public void create() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
 }
