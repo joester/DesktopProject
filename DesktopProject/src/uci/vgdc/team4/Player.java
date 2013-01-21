@@ -14,7 +14,7 @@ public class Player extends Entity{
 	}
 
 	@Override
-	public void update(int dt) {
+	public void update(float dt) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -21,6 +21,6 @@ public abstract class Entity extends Actor{
 		this.sheet = sheet;
 	}
 	
-	public abstract void update(int dt);
+	public abstract void update(float dt);
 	public abstract void render();
 }
