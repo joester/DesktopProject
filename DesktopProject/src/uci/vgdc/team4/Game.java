@@ -17,6 +17,9 @@ public class Game implements ApplicationListener{
 	Sound effect;
 	
 	GameTimer timer;
+
+	ArrayList<Enemy> Enemies = new ArrayList<Enemy>();
+	ArrayList<XP> XP = new ArrayList<XP>();
 	
 	@Override
 	public void create() {		
@@ -52,6 +55,10 @@ public class Game implements ApplicationListener{
 		
 		/* Update */
 		timer.update(dt);
+
+		/* Sort */
+		Collections.sort(Enemies, new EntityComparator());
+		Collections.sort(XP, new EntityComparator());
 		
 		/* Draw */
 		SpriteBatch sprites = new SpriteBatch();
