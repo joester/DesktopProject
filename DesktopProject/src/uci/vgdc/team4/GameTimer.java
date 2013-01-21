@@ -1,4 +1,6 @@
-package uci.vgdc.team4.timer;
+package uci.vgdc.team4;
+
+
 
 
 public class GameTimer
