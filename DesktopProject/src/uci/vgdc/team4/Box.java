@@ -3,6 +3,7 @@ package uci.vgdc.team4;
 import java.awt.Point;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public class Box extends Entity{
@@ -20,7 +21,7 @@ public class Box extends Entity{
 	}
 
 	@Override
-	public void render() {
+	public void render(SpriteBatch batch) {
 		// TODO Auto-generated method stub
 		
 	}
