@@ -38,7 +38,7 @@ public class Game implements ApplicationListener{
 		tex = new Texture(Gdx.files.internal("data/NicCageFace.jpg"));
 		tex2 = new Texture(Gdx.files.internal("data/dog.jpg"));
 		effect = Gdx.audio.newSound(Gdx.files.internal("data/sound.wav"));
-		p = new Player(1, 1, new Point(0,0), new Vector2(0,0), new Sprite(new Texture(Gdx.files.internal("data/bama.jpg"))), 50, 50);
+		p = new Player(1, 1, new Vector2(0,0), new Vector2(0,0), new Sprite(new Texture(Gdx.files.internal("data/bama.jpg"))), 50, 50);
 		
 		Gdx.app.log("create()", "I CAN DRAW DOG");
 	}
