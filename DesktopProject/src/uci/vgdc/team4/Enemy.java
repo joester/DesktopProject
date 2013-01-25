@@ -11,7 +11,7 @@ public class Enemy extends Entity{
 	// Caches the position of the Box.
 	public final Entity box;
 
-	public Enemy(int hp, float speed, Point position, Vector2 velocity,
+	public Enemy(int hp, float speed, Vector2 position, Vector2 velocity,
 			Sprite sheet, int sWidth, int sHeight, Entity box) {
 		super(hp, speed, position, velocity, sheet, sWidth, sHeight);
 		this.box = box;
@@ -20,13 +20,13 @@ public class Enemy extends Entity{
 
 	@Override
 	public void update(float dt) {
-		double x = box.position.getX() - position.getX();
-		double y = box.position.getY() - position.getY();
+		double x = box.position.x - position.x;
+		double y = box.position.y - position.y;
 		double r = Math.sqrt(x*x+y*y);
 		if (r == 0)
 			return;
 		velocity = new Vector2((float)(speed*x/r), (float)(speed*y/r));
-		position.setLocation(position.x + velocity.x*dt, position.y + velocity.y*dt);
+		position.set(position.x + velocity.x*dt, position.y + velocity.y*dt);
 	}
 
 	@Override
