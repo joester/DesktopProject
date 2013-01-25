@@ -10,11 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public abstract class Entity extends Actor{
 	public int hp;
 	public float speed;
-	public Point position;
+	public Vector2 position;
 	public Vector2 velocity;
 	public Sprite sheet;
 	
-	public Entity(int hp, float speed, Point position, Vector2 velocity, Sprite sheet, int sWidth, int sHeight){
+	public Entity(int hp, float speed, Vector2 position, Vector2 velocity, Sprite sheet, int sWidth, int sHeight){
 		this.hp = hp;
 		this.speed = speed;
 		this.position = position;
