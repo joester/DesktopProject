@@ -6,7 +6,6 @@ import java.util.Collections;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -32,9 +31,14 @@ public class Game implements ApplicationListener{
 		this.timer = new GameTimer(120);
 		timer.start();
 		
-		tex = new Texture(Gdx.files.internal("trunk/DesktopProject/data/back.jpg"));
-		effect = Gdx.audio.newSound(Gdx.files.internal("trunk/DesktopProject/data/sound.wav"));
-		p = new Player(1, 100, new Vector2(0,0), new Vector2(0,0), new Sprite(new Texture(Gdx.files.internal("trunk/DesktopProject/data/bama.jpg"))), 50, 50);
+		tex = new Texture(Gdx.files.internal("data/bg.jpg"));
+		effect = Gdx.audio.newSound(Gdx.files.internal("data/sound.wav"));
+		p = new Player(1, // Health
+				100, // Speed
+				new Vector2(0,0), new Vector2(0,0), 
+				new Sprite(new Texture(Gdx.files.internal("data/bama.jpg"))), 
+				50, // Sprite width
+				50);// Sprite height
 		Controller controller = new Controller(Gdx.graphics.getHeight());
 		controller.addControllable(p);
 		Gdx.input.setInputProcessor(controller);
@@ -70,6 +74,8 @@ public class Game implements ApplicationListener{
 		/* Draw */
 		
 		//Comment out anything that has to do with p if you need to run.
+		
+		// Clears the screen
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		SpriteBatch sprites = new SpriteBatch();

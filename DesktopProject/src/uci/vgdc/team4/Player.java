@@ -1,7 +1,5 @@
 package uci.vgdc.team4;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -12,7 +10,6 @@ public class Player extends Entity implements Controllable{
 			Sprite sheet, int sWidth, int sHeight) {
 		super(hp, speed, position, velocity, sheet, sWidth, sHeight);
 		// TODO Auto-generated constructor stub
-		sheet = new Sprite(new Texture(Gdx.files.internal("trunk/DesktopProject/data/bama.jpg")));
 	}
 
 	@Override

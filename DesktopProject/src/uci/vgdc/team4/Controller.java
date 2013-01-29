@@ -6,8 +6,12 @@ import java.util.ArrayList;
 
 public class Controller implements InputProcessor{
 
-	private ArrayList<Controllable> controlled;
+	
+	/*
+	 * height: input
+	 */
 	private int height;
+	private ArrayList<Controllable> controlled;
 	
 	public Controller(int height) {
 		controlled = new ArrayList<Controllable>();
