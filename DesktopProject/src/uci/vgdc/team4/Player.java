@@ -55,5 +55,11 @@ public class Player extends Entity implements Controllable{
 
 	}
 
+	@Override
+	public void setVelocity(Vector2 v) {
+		velocity = v;
+		
+	}
+
 
 }
