@@ -91,8 +91,6 @@ public class Game implements ApplicationListener{
 			effect.play(.7f);
 		}
 		
-		
-		System.out.println(timer.time());
 	}
 
 	@Override
