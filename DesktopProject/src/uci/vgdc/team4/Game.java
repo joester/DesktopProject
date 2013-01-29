@@ -4,10 +4,10 @@ package uci.vgdc.team4;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import java.awt.Point;
-
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,9 +15,6 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Game implements ApplicationListener{
 
-	/**
-	 * @param args
-	 */
 	
 	Texture tex;
 	Texture tex2;
@@ -38,7 +35,10 @@ public class Game implements ApplicationListener{
 		tex = new Texture(Gdx.files.internal("data/NicCageFace.jpg"));
 		tex2 = new Texture(Gdx.files.internal("data/dog.jpg"));
 		effect = Gdx.audio.newSound(Gdx.files.internal("data/sound.wav"));
-		p = new Player(1, 1, new Vector2(0,0), new Vector2(0,0), new Sprite(new Texture(Gdx.files.internal("data/bama.jpg"))), 50, 50);
+		p = new Player(1, 100, new Vector2(0,0), new Vector2(0,0), new Sprite(new Texture(Gdx.files.internal("data/bama.jpg"))), 50, 50);
+		Controller controller = new Controller(Gdx.graphics.getHeight());
+		controller.addControllable(p);
+		Gdx.input.setInputProcessor(controller);
 		
 		Gdx.app.log("create()", "I CAN DRAW DOG");
 	}
@@ -72,6 +72,7 @@ public class Game implements ApplicationListener{
 		/* Draw */
 		
 		//Comment out anything that has to do with p if you need to run.
+		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		SpriteBatch sprites = new SpriteBatch();
 		sprites.begin();
@@ -80,11 +81,13 @@ public class Game implements ApplicationListener{
 		p.render(sprites);
 		sprites.end();
 		
-		p.update(1);
+		p.update(dt);
 		
+		/*
 		if(Gdx.input.justTouched()){
 			effect.play(.7f);
 		}
+		*/
 		
 		System.out.println(timer.time());
 	}

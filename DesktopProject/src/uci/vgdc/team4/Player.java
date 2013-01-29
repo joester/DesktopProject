@@ -1,14 +1,12 @@
 package uci.vgdc.team4;
 
-import java.awt.Point;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-public class Player extends Entity{
+public class Player extends Entity implements Controllable{
 		
 	public Player(int hp, float speed, Vector2 position, Vector2 velocity,
 			Sprite sheet, int sWidth, int sHeight) {
@@ -19,19 +17,13 @@ public class Player extends Entity{
 
 	@Override
 	public void update(float dt) {
-		// TODO Auto-generated method stub
-		if(Gdx.input.isTouched()){
-			sheet.setX((Gdx.input.getX() - sheet.getX()) / 10);
-			sheet.setY((512 - (Gdx.input.getY() - sheet.getY())) / 10);
-			System.out.println(sheet.getX() + " " + sheet.getY());
-		}
+		position.add(velocity.cpy().mul(dt));
 	}
 
 
 	@Override
 	public void render(SpriteBatch batch) {
-		// TODO Auto-generated method stub
-		sheet.draw(batch);
+		batch.draw(sheet, position.x, position.y);
 	}
 
 	@Override
@@ -44,6 +36,17 @@ public class Player extends Entity{
 	public void dispose() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void goToPoint(int x, int y) {
+		float dx = x - position.x;
+		float dy = y - position.y;
+		float r = (float)Math.sqrt(dx*dx+dy*dy);
+		if (r==0)
+			return;
+		velocity.x = speed*dx/r;
+		velocity.y = speed*dy/r;
 	}
 
 
