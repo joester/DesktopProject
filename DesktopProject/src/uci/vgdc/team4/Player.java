@@ -46,5 +46,11 @@ public class Player extends Entity implements Controllable{
 		velocity.y = speed*dy/r;
 	}
 
+	@Override
+	public void setVelocity(Vector2 v) {
+		velocity = v;
+		
+	}
+
 
 }
