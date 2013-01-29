@@ -12,7 +12,7 @@ public class Player extends Entity implements Controllable{
 			Sprite sheet, int sWidth, int sHeight) {
 		super(hp, speed, position, velocity, sheet, sWidth, sHeight);
 		// TODO Auto-generated constructor stub
-		sheet = new Sprite(new Texture(Gdx.files.internal("data/bama.jpg")));
+		sheet = new Sprite(new Texture(Gdx.files.internal("trunk/DesktopProject/data/bama.jpg")));
 	}
 
 	@Override

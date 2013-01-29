@@ -5,6 +5,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 public class DeskMain {
 	public static void main(String[] args) {
+		System.out.println(System.getProperty("user.dir"));
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.resizable = false;
 		config.height = 600;//800;

@@ -65,7 +65,7 @@ public class Controller implements InputProcessor{
 	@Override
 	public boolean touchUp(int arg0, int arg1, int arg2, int arg3) {
 		// TODO Auto-generated method stub
-		return true;
+		return false;
 	}
 
 }

@@ -32,10 +32,9 @@ public class Game implements ApplicationListener{
 		this.timer = new GameTimer(120);
 		timer.start();
 		
-		tex = new Texture(Gdx.files.internal("data/NicCageFace.jpg"));
-		tex2 = new Texture(Gdx.files.internal("data/dog.jpg"));
-		effect = Gdx.audio.newSound(Gdx.files.internal("data/sound.wav"));
-		p = new Player(1, 100, new Vector2(0,0), new Vector2(0,0), new Sprite(new Texture(Gdx.files.internal("data/bama.jpg"))), 50, 50);
+		tex = new Texture(Gdx.files.internal("trunk/DesktopProject/data/bg.jpg"));
+		effect = Gdx.audio.newSound(Gdx.files.internal("trunk/DesktopProject/data/sound.wav"));
+		p = new Player(1, 100, new Vector2(0,0), new Vector2(0,0), new Sprite(new Texture(Gdx.files.internal("trunk/DesktopProject/data/bama.jpg"))), 50, 50);
 		Controller controller = new Controller(Gdx.graphics.getHeight());
 		controller.addControllable(p);
 		Gdx.input.setInputProcessor(controller);
@@ -47,7 +46,6 @@ public class Game implements ApplicationListener{
 	public void dispose() {
 		// TODO Auto-generated method stub
 		tex.dispose();
-		tex2.dispose();
 		effect.dispose();
 	}
 
@@ -77,7 +75,6 @@ public class Game implements ApplicationListener{
 		SpriteBatch sprites = new SpriteBatch();
 		sprites.begin();
 		sprites.draw(tex, 0, 0);
-		sprites.draw(tex2, 0, 200);
 		p.render(sprites);
 		sprites.end();
 		
