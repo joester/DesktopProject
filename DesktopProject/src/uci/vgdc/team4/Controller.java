@@ -8,7 +8,7 @@ public class Controller implements InputProcessor{
 
 	
 	/*
-	 * height: input
+	 * height: Input taken from top-left corner; we count from bottom left.  Subtract this.
 	 */
 	private int height;
 	private ArrayList<Controllable> controlled;
