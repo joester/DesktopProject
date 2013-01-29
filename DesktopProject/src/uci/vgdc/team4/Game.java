@@ -32,7 +32,7 @@ public class Game implements ApplicationListener{
 		this.timer = new GameTimer(120);
 		timer.start();
 		
-		tex = new Texture(Gdx.files.internal("trunk/DesktopProject/data/bg.jpg"));
+		tex = new Texture(Gdx.files.internal("trunk/DesktopProject/data/back.jpg"));
 		effect = Gdx.audio.newSound(Gdx.files.internal("trunk/DesktopProject/data/sound.wav"));
 		p = new Player(1, 100, new Vector2(0,0), new Vector2(0,0), new Sprite(new Texture(Gdx.files.internal("trunk/DesktopProject/data/bama.jpg"))), 50, 50);
 		Controller controller = new Controller(Gdx.graphics.getHeight());
