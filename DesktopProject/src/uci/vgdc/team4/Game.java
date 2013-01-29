@@ -83,11 +83,11 @@ public class Game implements ApplicationListener{
 		
 		p.update(dt);
 		
-		/*
+		
 		if(Gdx.input.justTouched()){
 			effect.play(.7f);
 		}
-		*/
+		
 		
 		System.out.println(timer.time());
 	}
