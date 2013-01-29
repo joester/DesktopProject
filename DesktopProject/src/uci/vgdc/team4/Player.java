@@ -3,6 +3,7 @@ package uci.vgdc.team4;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Player extends Entity implements Controllable{
@@ -57,9 +58,20 @@ public class Player extends Entity implements Controllable{
 
 	@Override
 	public void setVelocity(Vector2 v) {
-		velocity = v;
+		velocity = v.mul(speed);
+		destPos = Vector2.Zero;
 		
 	}
-
+	
+	public Vector2 getVeclocity()
+	{
+		return this.velocity;
+	}
+	
+	public Rectangle getRect()
+	{
+		return new Rectangle(position.x, position.y, this.sheet.getWidth(), this.sheet.getHeight());
+				
+	}
 
 }

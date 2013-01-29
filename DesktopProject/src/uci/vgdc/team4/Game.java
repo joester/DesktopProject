@@ -18,10 +18,11 @@ public class Game implements ApplicationListener{
 	Texture tex;
 	Texture tex2;
 	Sound effect;
-	Player p;
+	static Player p;
+	Box box;
 	
 	GameTimer timer;
-
+	SpriteBatch spriteBatch;
 	ArrayList<Enemy> Enemies = new ArrayList<Enemy>();
 	ArrayList<XP> XP = new ArrayList<XP>();
 	
@@ -30,9 +31,10 @@ public class Game implements ApplicationListener{
 		// TODO Auto-generated method stub
 		this.timer = new GameTimer(120);
 		timer.start();
-		
+		spriteBatch = new SpriteBatch();
 		tex = new Texture(Gdx.files.internal("data/bg.jpg"));
 		effect = Gdx.audio.newSound(Gdx.files.internal("data/sound.wav"));
+		box = new Box(0,0,Vector2.Zero,Vector2.Zero,null,0,0);
 		p = new Player(1, // Health
 				100, // Speed
 				new Vector2(0,0), new Vector2(0,0), 
@@ -51,12 +53,18 @@ public class Game implements ApplicationListener{
 		// TODO Auto-generated method stub
 		tex.dispose();
 		effect.dispose();
+		box.dispose();
 	}
 
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public static Player getPlayer()
+	{
+		return p;
 	}
 
 	@Override
@@ -66,7 +74,7 @@ public class Game implements ApplicationListener{
 		
 		/* Update */
 		timer.update(dt);
-
+		box.update(dt);
 		/* Sort */
 		Collections.sort(Enemies, new EntityComparator());
 		Collections.sort(XP, new EntityComparator());
@@ -78,11 +86,12 @@ public class Game implements ApplicationListener{
 		// Clears the screen
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		SpriteBatch sprites = new SpriteBatch();
-		sprites.begin();
-		sprites.draw(tex, 0, 0);
-		p.render(sprites);
-		sprites.end();
+		
+		spriteBatch.begin();
+		spriteBatch.draw(tex, 0, 0);
+		box.render(spriteBatch);
+		p.render(spriteBatch);
+		spriteBatch.end();
 		
 		p.update(dt);
 		
