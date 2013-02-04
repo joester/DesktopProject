@@ -10,12 +10,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 public class Player extends AnimatedObject implements Controllable
-{	
+{
+	/* Animation */
 	private static final int ANIMATION_IDLE = 0;
 	private static final int ANIMATION_MOVING = 1;
 	private static final int ANIMATION_MOVINGSTART = 2;
 	private static final int ANIMATION_MOVINGSTOP = 3;
-		
+	
+	private float facing_angle = 0;
 	/* Constructor */
 	/**
 	 * Constructs a player object for a game.
