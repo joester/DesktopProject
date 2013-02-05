@@ -2,6 +2,7 @@ package collisionalpha.game;
 
 
 import collisionalpha.game.controls.Controller;
+import collisionalpha.game.objects.Device;
 import collisionalpha.game.objects.GameObject;
 import collisionalpha.game.objects.Player;
 import collisionalpha.game.room.Room;
@@ -35,7 +36,7 @@ public class Game implements ApplicationListener
 		testure3 = new Texture(Gdx.files.internal("data/greenball.png"));
 		testobj = new Player(0, 90, 90, 1, 300, 32, 32, testcolliders, true, 96, 96, testure, 64, 64);
 		
-		GameObject box = new GameObject(1,400,400,1,300,58,58,testcolliders,true,64,64,testure3,64,64);
+		Device box = new Device(1,400,400,1,300,58,58,testcolliders,true,64,64,testure3,64,64);
 		GameObject blocker = new GameObject(10,200,200,1,300,64,64,testcolliders,true,64,64,testure2,64,64);
 		
 		testroom = new Room();
