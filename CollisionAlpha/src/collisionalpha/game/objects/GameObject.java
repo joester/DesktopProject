@@ -550,7 +550,7 @@ public class GameObject
 	 * 
 	 * @param spritebatch used to render this object to the screen.
 	 */
-	public final void render(SpriteBatch spritebatch)
+	public void render(SpriteBatch spritebatch)
 	{
 		this.sprite.setOrigin(this.drawWidth/2, this.drawHeight/2);
 		this.sprite.setSize(this.drawWidth,this.drawHeight);

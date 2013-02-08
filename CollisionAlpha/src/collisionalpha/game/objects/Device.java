@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import collisionalpha.game.GameMain;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Device extends GameObject {
@@ -18,30 +19,36 @@ public class Device extends GameObject {
 		
 		
 	}
+	@Override
+	public void render(SpriteBatch sprites)
+	{
+		super.render(sprites);
+		
+	}
 	
 	@Override
 	public void update(float dt, ArrayList<GameObject> objects) {
 		
 		super.update(dt, objects);
-		if(this.get_positionX() <= 20)
+		if(this.get_positionX() <= this.getDrawWidth()/ 2)
 		{
-			this.set_position(21, this.get_positionY());
-			this.add_velocity(500, 0);
+			this.set_position(this.get_hitWidth()/2 + 2, this.get_positionY());
+			this.add_velocity(200, 0);
 		}
-		if(this.get_positionY() <= 20){
-			this.set_position(this.get_positionX(), 21);
-			this.add_velocity(0, 500 );
-			System.out.println("under the line");
+		if(this.get_positionY() <= this.getDrawHeight()/2){
+			this.set_position(this.get_positionX(), this.getDrawHeight()/2 + 2);
+			this.add_velocity(0, 200 );
+			//System.out.println("under the line");
 		}
-		if(this.get_positionX() >= GameMain.CONFIG_WIDTH + 20){
-			this.set_position(this.get_positionX() - this.get_hitWidth() - 1, this.get_positionY());
-			this.add_velocity(-500, 0);
+		if(this.get_positionX() >= GameMain.CONFIG_WIDTH - this.getDrawWidth()/2 ){
+			this.set_position(GameMain.CONFIG_WIDTH - this.getDrawWidth()/2 - 1, this.get_positionY());
+			this.add_velocity(-200, 0);
 		}
 		
-		if(this.get_positionY() >= GameMain.CONFIG_HEIGHT - 20)
+		if(this.get_positionY() >= GameMain.CONFIG_HEIGHT - this.getDrawHeight()/2)
 		{
-			this.set_position(this.get_positionX(), GameMain.CONFIG_HEIGHT - this.get_hitHeight() -10);
-			this.add_velocity(0, -500);
+			this.set_position(this.get_positionX(), GameMain.CONFIG_HEIGHT - this.getDrawHeight()/2 - 1);
+			this.add_velocity(0, -200);
 		}
 	}
 
