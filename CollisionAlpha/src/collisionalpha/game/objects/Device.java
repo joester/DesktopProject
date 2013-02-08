@@ -10,19 +10,14 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Device extends GameObject {
 
-	public Device(int objectID, float posX, float posY, float mass,
-			float friction, float hitWidth, float hitHeight, int[] colliders,
-			boolean isSolid, float drawWidth, float drawHeight,
-			Texture sprites, int srcWidth, int srcHeight) {
-		super(objectID, posX, posY, mass, friction, hitWidth, hitHeight, colliders,
-				isSolid, drawWidth, drawHeight, sprites, srcWidth, srcHeight);
+	public Device(int objectID, float posX, float posY, float mass, float friction, 
+			float hitWidth, float hitHeight, float hitX, float hitY, int[] colliders, 
+			boolean isSolid, float touchRadius, boolean isTouchable, float drawWidth, 
+			float drawHeight, Texture sprites, int srcWidth, int srcHeight)
+	 {
+		super(objectID, posX, posY, mass, friction, hitWidth, hitHeight, hitX, hitY, colliders,
+				isSolid, touchRadius, isTouchable, drawWidth, drawHeight, sprites, srcWidth, srcHeight);
 		
-		
-	}
-	@Override
-	public void render(SpriteBatch sprites)
-	{
-		super.render(sprites);
 		
 	}
 	
