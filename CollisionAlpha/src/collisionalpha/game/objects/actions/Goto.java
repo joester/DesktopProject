@@ -42,7 +42,7 @@ public class Goto extends Action
 		{
 			//TODO Complicate
 			float direction = (float)Math.atan2(y - self.get_positionY(), x - self.get_positionX());
-			self.set_velocity((float)(200 * Math.cos(direction)), (float)(200 * Math.sin(direction)));
+			self.set_velocity((float)(self.speed * Math.cos(direction)), (float)(self.speed * Math.sin(direction)));
 		}//esle
 	}//END act
 

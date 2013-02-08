@@ -26,17 +26,21 @@ public class AnimatedObject extends GameObject
 	 * @param friction the magnitude of the friction force applied to the object
 	 * @param hitWidth the width of the hitbox
 	 * @param hitHeight the height of the hitbox
+	 * @param hitX the x offset of the hitbox
+	 * @param hitY the y offset of the hitbox
 	 * @param colliders the things this object will collide and interact with
 	 * @param isSolid whether or not the object can be moved through
+	 * @param isTouchable if the object is touchable or not
+	 * @param drawWidth the width that the object is drawn at
 	 * @param drawWidth the width that the object is drawn at
 	 * @param drawHeight the height that the object is drawn at
 	 * @param sprites the set of sprites to be used in drawing the object
 	 * @param srcWidth the width of a sprite
 	 * @param srcHeight the height of a sprite
 	 */
-	public AnimatedObject(int objectID, float posX, float posY, float mass, float friction, float hitWidth, float hitHeight, int[] colliders, boolean isSolid, float drawWidth, float drawHeight, Texture sprites, int srcWidth, int srcHeight)
+	public AnimatedObject(int objectID, float posX, float posY, float mass, float friction, float hitWidth, float hitHeight, float hitX, float hitY, int[] colliders, boolean isSolid, float touchRadius, boolean isTouchable, float drawWidth, float drawHeight, Texture sprites, int srcWidth, int srcHeight)
 	{
-		super(objectID, posX, posY, mass, friction, hitWidth, hitHeight, colliders, isSolid, drawWidth, drawHeight, sprites, srcWidth, srcHeight);
+		super(objectID, posX, posY, mass, friction, hitWidth, hitHeight, hitX, hitY, colliders, isSolid, touchRadius, isTouchable, drawWidth, drawHeight, sprites, srcWidth, srcHeight);
 		
 		this.animator = new Animator(this.sprite, srcWidth, srcHeight);
 	}//END AnimatedObject
@@ -57,14 +61,34 @@ public class AnimatedObject extends GameObject
 	}//END add_animation
 	
 	/**
-	 * Sets the animation to animate.
+	 * Will cancel the current animation and set it the the indicated state.
+	 * 
+	 * @param animationID the ID of the animation.
+	 */
+	public void set_animationState(int animationID)
+	{
+		this.animation_state =  animationID;
+		this.animationSet = false;
+	}//END set_animation
+	
+	/**
+	 * Sets the animation to animate, if there is no animation currently going on.
 	 * 
 	 * @param animationID the ID of the animation.
 	 */
 	public void set_animation(int animationID)
 	{
 		this.animator.set_amimation(animationID);
-	}//END set_animation
+		this.animationSet = true;
+	}//END set_animationStart
+	
+	/**
+	 * Ends the current animation
+	 */
+	public void end_animation()
+	{
+		this.animationSet = false;
+	}//END end_animation
 	
 	/* Update */
 	@Override
@@ -79,15 +103,13 @@ public class AnimatedObject extends GameObject
 	{
 		if(this.animator.isDone())
 		{
-			this.animationSet = false;
-			
+			this.end_animation();
 			this.update_animationState();
 		}//fi
 		
 		if(!this.animationSet)
 		{
 			this.set_animation(animation_state);
-			this.animationSet = true;
 		}//fi
 	}//END update_animationState
 	

@@ -2,7 +2,7 @@ package collisionalpha.game;
 
 
 import collisionalpha.game.controls.Controller;
-import collisionalpha.game.objects.Device;
+import collisionalpha.game.objects.Enemy;
 import collisionalpha.game.objects.GameObject;
 import collisionalpha.game.objects.Player;
 import collisionalpha.game.room.Room;
@@ -20,6 +20,8 @@ public class Game implements ApplicationListener
 	Texture testure;
 	Texture testure2;
 	Texture testure3;
+	Texture testure4;
+	Texture backtest;
 	Player testobj;
 	Room testroom;
 	int[] testcolliders = {1,2};
@@ -31,20 +33,32 @@ public class Game implements ApplicationListener
 	@Override
 	public void create()
 	{
-		testure = new Texture(Gdx.files.internal("data/grim.png"));
+		testure = new Texture(Gdx.files.internal("data/ness_walk.png"));
 		testure2 = new Texture(Gdx.files.internal("data/Sprite-example.png"));
 		testure3 = new Texture(Gdx.files.internal("data/greenball.png"));
-		testobj = new Player(0, 90, 90, 1, 300, 32, 32, testcolliders, true, 96, 96, testure, 64, 64);
+		testure4 = new Texture(Gdx.files.internal("data/redblock.png"));
+		backtest = new Texture(Gdx.files.internal("data/backgrounds/grass.png"));
+		testobj = new Player(0, 90, 90, 1, 300, 32, 20, 0, -15, testcolliders, true, 60, true, 32, 50, testure, 32, 50);
 		
-		Device box = new Device(1,400,400,1,300,58,58,testcolliders,true,64,64,testure3,64,64);
-		GameObject blocker = new GameObject(10,200,200,1,300,64,64,testcolliders,true,64,64,testure2,64,64);
+		GameObject box = new GameObject(1,400,400,1,300,58,58,0,0,testcolliders,true,60,true,64,64,testure3,64,64);
+		GameObject blocker = new GameObject(10,200,200,1,300,64,64,0,0,testcolliders,true,60,true,64,64,testure2,64,64);
+		GameObject enemy1 = new Enemy(box,3, 500, 400, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
+		GameObject enemy2 = new Enemy(box,3, 500, 500, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
+		GameObject enemy3 = new Enemy(box,3, 500, 600, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
+		GameObject enemy4 = new Enemy(box,3, 500, 300, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
+		GameObject enemy5 = new Enemy(box,3, 500, 200, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
 		
-		testroom = new Room();
+		testroom = new Room(backtest, testobj);
 		testroom.add_object(box);
-		testroom.add_object(blocker);
+
+		testroom.add_object(enemy1);
+		testroom.add_object(enemy2);
+		testroom.add_object(enemy3);
+		testroom.add_object(enemy4);
+		testroom.add_object(enemy5);
+		
 		testroom.add_object(testobj);
 		
-		this.controller.add_controllable(testobj);
 		this.controller.add_controllable(testroom);
 		
 		Gdx.input.setInputProcessor(this.controller);
@@ -57,6 +71,8 @@ public class Game implements ApplicationListener
 		testure.dispose();
 		testure2.dispose();
 		testure3.dispose();
+		testure4.dispose();
+		backtest.dispose();
 	}
 
 	@Override

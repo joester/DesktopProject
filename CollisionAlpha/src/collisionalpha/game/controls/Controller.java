@@ -62,7 +62,7 @@ public class Controller implements InputProcessor
 		while(iter.hasNext())
 		{
 			Controllable controllable = iter.next();
-			controllable.input_touch(x, GameMain.CONFIG_HEIGHT - y, pointer, button);
+			controllable.input_touchDown(x, GameMain.CONFIG_HEIGHT - y, pointer, button);
 		}//elihw
 		
 		return false;
@@ -75,8 +75,16 @@ public class Controller implements InputProcessor
 	}
 
 	@Override
-	public boolean touchUp(int arg0, int arg1, int arg2, int arg3) {
-		// TODO Auto-generated method stub
+	public boolean touchUp(int x, int y, int pointer, int button) {
+		System.out.println("("+x+","+y+","+pointer+","+button+")");
+		
+		Iterator<Controllable> iter = this.controllables.iterator();
+		while(iter.hasNext())
+		{
+			Controllable controllable = iter.next();
+			controllable.input_touchUp(x, GameMain.CONFIG_HEIGHT - y, pointer, button);
+		}//elihw
+		
 		return false;
 	}
 

@@ -4,17 +4,18 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-
-import collisionalpha.game.objects.actions.ActionQueue;
+import collisionalpha.game.GameMain;
+import collisionalpha.game.objects.actions.*;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class GameObject
 {
+	public float speed = 100; //TODO temp
+	
 	/* Identification */
 	private int objectID; //Indicates the type of object this object is.
 	
@@ -34,9 +35,15 @@ public class GameObject
 	
 	/* Collision */
 	protected float hitWidth, hitHeight; //The width and height of the hitbox.
+	protected float hitOffsetX, hitOffsetY;  //The offset of the hitbox.
 	private HashSet<GameObject> collidedList; //A list of things the object has already collided with.
-	private boolean isSolid; //Whether or not other solid objects can go through this object.
+	/*TODO unprotect*/protected boolean isSolid; //Whether or not other solid objects can go through this object.
 	private int[] colliders; //The objects that collide with this object.
+	private boolean screenBound; //Whether or not the object is bound by the screen.
+	
+	/* Touch */
+	private boolean isTouchable; //Whether or not the object can be interacted with.
+	private float touchRadius; //The distance from the center to area touched before it registers a touch.
 	
 	/* Actions */
 	protected ActionQueue action_queue = new ActionQueue();
@@ -52,15 +59,19 @@ public class GameObject
 	 * @param friction the magnitude of the friction force applied to the object
 	 * @param hitWidth the width of the hitbox
 	 * @param hitHeight the height of the hitbox
+	 * @param hitX the x offset of the hitbox
+	 * @param hitY the y offset of the hitbox
 	 * @param colliders the things this object will collide and interact with
 	 * @param isSolid whether or not the object can be moved through
+	 * @param touchRadius how far away the player can touch on the screen to get this object to being registered as being touched
+	 * @param isTouchable if the object is touchable or not
 	 * @param drawWidth the width that the object is drawn at
 	 * @param drawHeight the height that the object is drawn at
 	 * @param sprites the set of sprites to be used in drawing the object
 	 * @param srcWidth the width of a sprite
 	 * @param srcHeight the height of a sprite
 	 */
-	public GameObject(int objectID, float posX, float posY, float mass, float friction, float hitWidth, float hitHeight, int[] colliders, boolean isSolid, float drawWidth, float drawHeight, Texture sprites, int srcWidth, int srcHeight)
+	public GameObject(int objectID, float posX, float posY, float mass, float friction, float hitWidth, float hitHeight, float hitX, float hitY, int[] colliders, boolean isSolid, float touchRadius, boolean isTouchable, float drawWidth, float drawHeight, Texture sprites, int srcWidth, int srcHeight)
 	{
 		/* ID */
 		this.objectID = objectID;
@@ -76,9 +87,15 @@ public class GameObject
 		/* Collision */
 		this.hitWidth = hitWidth;
 		this.hitHeight = hitHeight;
+		this.hitOffsetX = hitX;
+		this.hitOffsetY = hitY;
 		this.colliders = colliders;
 		this.isSolid = isSolid;
 		this.collidedList = new HashSet<GameObject>();
+		
+		/* Touch */
+		this.touchRadius = touchRadius;
+		this.isTouchable = isTouchable;
 		
 		/* Drawing */
 		this.drawWidth = drawWidth;
@@ -161,7 +178,7 @@ public class GameObject
 		//Y Direction
 		Vector2 nextPos = this.position.cpy().add(0, jumpY);
 		int collisionX = this.collides(colliders, nextPos);
-		if(collisionX != 1 && collisionX != 3) //If does not collide with a solid...
+		if(collisionX != 1 && collisionX != 3 && !offscreenY(nextPos)) //If does not collide with a solid...
 		{
 			this.position.set(nextPos);
 		}//fi
@@ -169,7 +186,7 @@ public class GameObject
 		//X Direction
 		nextPos = this.position.cpy().add(jumpX, 0);
 		int collisionY = this.collides(colliders, nextPos);
-		if(collisionY != 1 && collisionY != 3) //If does not collide with a solid...
+		if(collisionY != 1 && collisionY != 3 && !offscreenX(nextPos)) //If does not collide with a solid...
 		{
 			this.position.set(nextPos);
 		}//fi
@@ -184,6 +201,26 @@ public class GameObject
 	{
 		this.jump(colliders, jump.x, jump.y);
 	}//END jump
+	
+	private boolean offscreenX(Vector2 nextPos)
+	{
+		if(nextPos.x < 0 || nextPos.x > GameMain.CONFIG_WIDTH)
+			{
+				this.velocity.x = -this.velocity.x;
+				return true;
+			}
+		return false;
+	}//END offscreenCheckX
+	
+	private boolean offscreenY(Vector2 nextPos)
+	{
+		if(nextPos.y < 0 || nextPos.y > GameMain.CONFIG_HEIGHT)
+			{
+				this.velocity.y = -this.velocity.y;
+				return true;
+			}
+		return false;
+	}//END offscreenCheckY
 	
 	// Velocity
 	/**
@@ -334,6 +371,22 @@ public class GameObject
 		return this.hitHeight;
 	}//END get_hitHeight
 	
+	/**
+	 * @return the x offset of the hitbox.
+	 */
+	public float get_hitOffsetX()
+	{
+		return this.hitOffsetX;
+	}//END get_hitOffsetX
+	
+	/**
+	 * @return the y offset of the hitbox.
+	 */
+	public float get_hitOffsetY()
+	{
+		return this.hitOffsetY;
+	}//END get_hitOffsetX
+	
 	//Solid
 	/**
 	 * @return whether or not the object is solid
@@ -389,15 +442,15 @@ public class GameObject
 	
 	private boolean isColliding(GameObject collider, Vector2 checkPos)
 	{
-		float self_left = checkPos.x - this.get_hitWidth()/2;
-		float self_right = checkPos.x + this.get_hitWidth()/2;
-		float self_bot = checkPos.y - this.get_hitHeight()/2;
-		float self_top = checkPos.y + this.get_hitHeight()/2;
+		float self_left = checkPos.x - this.get_hitWidth()/2 + this.get_hitOffsetX();
+		float self_right = checkPos.x + this.get_hitWidth()/2 + this.get_hitOffsetX();
+		float self_bot = checkPos.y - this.get_hitHeight()/2 + this.get_hitOffsetY();
+		float self_top = checkPos.y + this.get_hitHeight()/2 + this.get_hitOffsetY();
 		
-		float other_left = collider.get_positionX() - collider.get_hitWidth()/2;
-		float other_right = collider.get_positionX() + collider.get_hitWidth()/2;
-		float other_bot = collider.get_positionY() - collider.get_hitHeight()/2;
-		float other_top = collider.get_positionY() + collider.get_hitHeight()/2;
+		float other_left = collider.get_positionX() - collider.get_hitWidth()/2 + collider.get_hitOffsetX();
+		float other_right = collider.get_positionX() + collider.get_hitWidth()/2 + collider.get_hitOffsetX();
+		float other_bot = collider.get_positionY() - collider.get_hitHeight()/2 + collider.get_hitOffsetY();
+		float other_top = collider.get_positionY() + collider.get_hitHeight()/2 + collider.get_hitOffsetY();
 		
 		boolean collides = false;
 		
@@ -550,7 +603,7 @@ public class GameObject
 	 * 
 	 * @param spritebatch used to render this object to the screen.
 	 */
-	public void render(SpriteBatch spritebatch)
+	public final void render(SpriteBatch spritebatch)
 	{
 		this.sprite.setOrigin(this.drawWidth/2, this.drawHeight/2);
 		this.sprite.setSize(this.drawWidth,this.drawHeight);
@@ -588,21 +641,21 @@ public class GameObject
 	 * @param x the x value of where the user touched
 	 * @param y the y value of where the user touched
 	 */
-	public final void touch(float x, float y)
+	public final boolean touch(float x, float y)
 	{
 		if(this.isTouched(x, y))
 		{
 			this.behavior_touch();
+			return true;
 		}//fi
+		//else...
+		return false;
 	}//END touch
 	
 	private boolean isTouched(float x, float y)
 	{
 		//If point is in the object's hitbox
-		if(
-			(x >= this.position.x - this.hitWidth/2) && (x <= this.position.x + this.hitWidth/2)
-			&& (y >= this.position.y - this.hitHeight/2) && (y <= this.position.y + this.hitHeight/2)
-		)
+		if(this.position.dst(x, y) <= this.touchRadius/2)
 			{
 				return true;
 			}//fi

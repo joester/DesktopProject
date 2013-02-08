@@ -10,5 +10,6 @@ public interface Controllable
 	 * @param pointer the address of the touch
 	 * @param button the type of mouse click
 	 */
-	public void input_touch(int x, int y, int pointer, int button);
+	public void input_touchDown(int x, int y, int pointer, int button);
+	public void input_touchUp(int x, int y, int pointer, int button);
 }//END interface Controllable

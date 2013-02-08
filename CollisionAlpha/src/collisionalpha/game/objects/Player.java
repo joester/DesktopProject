@@ -4,20 +4,26 @@ import java.util.ArrayList;
 
 
 import collisionalpha.game.controls.Controllable;
+import collisionalpha.game.objects.actions.Attack;
 import collisionalpha.game.objects.actions.Goto;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
-public class Player extends AnimatedObject implements Controllable
+public class Player extends AnimatedObject
 {
 	/* Animation */
 	private static final int ANIMATION_IDLE = 0;
 	private static final int ANIMATION_MOVING = 1;
-	private static final int ANIMATION_MOVINGSTART = 2;
-	private static final int ANIMATION_MOVINGSTOP = 3;
 	
+	//Facing Angle
 	private float facing_angle = 0;
+	private int lastFacingIndex = 0;
+	private float heading_X, heading_Y;
+	
+	/* Touch */
+	private GameObject target = null;
+	
 	/* Constructor */
 	/**
 	 * Constructs a player object for a game.
@@ -29,47 +35,80 @@ public class Player extends AnimatedObject implements Controllable
 	 * @param friction the magnitude of the friction force applied to the object
 	 * @param hitWidth the width of the hitbox
 	 * @param hitHeight the height of the hitbox
+	 * @param hitX the x offset of the hitbox
+	 * @param hitY the y offset of the hitbox
 	 * @param colliders the things this object will collide and interact with
 	 * @param isSolid whether or not the object can be moved through
+	 * @param isTouchable if the object is touchable or not
+	 * @param drawWidth the width that the object is drawn at
 	 * @param drawWidth the width that the object is drawn at
 	 * @param drawHeight the height that the object is drawn at
 	 * @param sprites the set of sprites to be used in drawing the object
 	 * @param srcWidth the width of a sprite
 	 * @param srcHeight the height of a sprite
 	 */
-	public Player(int objectID, float posX, float posY, float mass, float friction, float hitWidth, float hitHeight, int[] colliders, boolean isSolid, float drawWidth, float drawHeight,
+	public Player(int objectID, float posX, float posY, float mass, float friction, float hitWidth, float hitHeight, float hitX, float hitY, int[] colliders, boolean isSolid, float touchRadius, boolean isTouchable, float drawWidth, float drawHeight,
 			Texture sprites, int srcWidth, int srcHeight)
 	{
-		super(objectID, posX, posY, mass, friction, hitWidth, hitHeight, colliders, isSolid, drawWidth, drawHeight, sprites, srcWidth, srcHeight);
+		super(objectID, posX, posY, mass, friction, hitWidth, hitHeight, hitX, hitY, colliders, isSolid, touchRadius, isTouchable, drawWidth, drawHeight, sprites, srcWidth, srcHeight);
+		
+		this.speed = 200; //TODO temp
 		
 		/* Animations */
-		this.add_animation(0, 0, 22, 11, true); //Idle
-		this.add_animation(0, 1, 12, 20, true); //Moving
-		this.add_animation(12, 1, 4, 20, false); //Start Moving
-		this.add_animation(16, 1, 8, 30, false); //Stop Moving
+		//Idle
+		for(int i = 0; i < 8; i++)
+		{
+			this.add_animation(0, i, 4, 5, true);
+		}//rof
+		
+		//Moving
+		for(int i = 0; i < 8; i++)
+		{
+			this.add_animation(0, i, 4, 10, true);
+		}//rof
 		
 		this.momentum_collision(new Vector2(200,200));
 		
-		this.set_animation(ANIMATION_IDLE);
-		this.animationSet = true;
+		this.directionBasedAnimation(ANIMATION_IDLE);
 	}//END Player
 	
 	/* Input */
-	@Override
-	public void input_touch(int x, int y, int pointer, int button)
+	public void input_touchDown(int x, int y, int pointer, int button, GameObject target)
 	{
-		if(button == 0)
+		this.target = target;
+		
+		if(target == null)
 		{
-			if(animation_state != ANIMATION_MOVING)
+			if(button == 0)
 			{
-				this.animation_state = ANIMATION_MOVINGSTART;
-				this.animationSet = false;
+				this.heading_X = x;
+				this.heading_Y = y;
+				this.action_queue.clear();
+				this.action_queue.add_action(new Goto(x, y));
+				if(this.animation_state != ANIMATION_MOVING)
+				{
+					this.directionBasedAnimation(ANIMATION_MOVING);
+				}//fi
 			}//fi
-			
-			this.action_queue.clear();
-			this.action_queue.add_action(new Goto(x, y));
 		}//fi
 	}//END input_touch
+	
+	public void input_touchUp(int x, int y, int pointer, int button)
+	{
+		if(this.target != null && this.target != this)
+		{
+			float direction = (float)(Math.atan2(y - this.target.get_positionY(), x - this.target.get_positionX()));
+			this.heading_X = this.target.get_positionX();
+			this.heading_Y = this.target.get_positionY();
+			System.out.println(direction);
+			this.action_queue.clear();
+			this.action_queue.add_action(new Attack(this.target,direction,60));
+			if(this.animation_state != ANIMATION_MOVING)
+			{
+				this.directionBasedAnimation(ANIMATION_MOVING);
+			}//fi
+		}//fi
+	}
 	
 	/* Collision */
 	@Override
@@ -78,45 +117,66 @@ public class Player extends AnimatedObject implements Controllable
 		float direction = (float)Math.atan2(- this.get_positionY() + collider.get_positionY(),
 				- this.get_positionX() + collider.get_positionX());
 		float vmag = this.get_vMagnitude()/(collider.get_mass() * 2);
-		float xcomp = (float)(vmag * Math.cos(direction));
-		float ycomp = (float)(vmag * Math.sin(direction));
-		collider.set_velocity(this.get_momentum().div(collider.get_mass()*2).add(xcomp, ycomp));
+		if(vmag > collider.get_vMagnitude())
+		{
+			float xcomp = (float)(vmag * Math.cos(direction));
+			float ycomp = (float)(vmag * Math.sin(direction));
+			collider.set_velocity(this.get_momentum().div(collider.get_mass()*2).add(xcomp, ycomp));
+		}//fi
 	}//END behavior_collision
+	
+	/* Animation */
+	private int get_facingAngleIndex()
+	{
+		return (int)((this.facing_angle + 22.5)%360)/(45);
+	}//END get_facingAngleIndex
+	
+	/**
+	 * Sets the animation based on the direction the object is facing.
+	 * 
+	 * @param animationID The ID of the set of animations.
+	 */
+	public void directionBasedAnimation(int animationID)
+	{
+		this.animation_state = animationID;
+		this.set_animation(animationID * 8 + this.get_facingAngleIndex());
+	}//END directionBasedAnimation
 	
 	/* Update */
 	@Override
 	public void update(float dt, ArrayList<GameObject> objects)
-	{	
-		super.update(dt, objects);
-		
-		//TODO do something different
-		if(this.animation_state == ANIMATION_MOVING || this.animation_state == ANIMATION_MOVINGSTART)
+	{
+		this.facing_angle = 180 + (float)(Math.atan2(this.get_positionY() - this.heading_Y,
+				this.get_positionX() - this.heading_X) * 180 / Math.PI);
+		int newFacing = this.get_facingAngleIndex();
+		boolean change;
+		if (newFacing != this.lastFacingIndex)
 		{
-			if(this.get_vMagnitude() > 0)
-			{
-				this.set_orientation(this.get_velocityDirection());
-			}//fi
-			
-			if(this.action_queue.get_actionID() == 0)
-			{
-				this.animation_state = ANIMATION_MOVINGSTOP;
-				this.animationSet = false;
-			}//fi
+			this.lastFacingIndex = newFacing;
+			change = true;
 		}//fi
+		else
+		{
+			change = false;
+		}//esle
+
+		
+		if(this.action_queue.get_actionID() == 0 && this.animation_state == ANIMATION_MOVING)
+		{
+			this.directionBasedAnimation(ANIMATION_IDLE);
+		}//fi
+		else if(this.action_queue.get_actionID() == 1 && change)
+		{
+			this.directionBasedAnimation(ANIMATION_MOVING);
+		}//fi esle
+		
+		super.update(dt, objects);
 	}//END update
 	
 	@Override
 	protected void update_animationState()
 	{
-		switch(this.animation_state)
-		{
-			case ANIMATION_MOVINGSTART:
-				this.animation_state = ANIMATION_MOVING;
-				break;
-			default:
-				this.animation_state = ANIMATION_IDLE;
-				break;
-		}//hctiws
+		
 	}//END update_animationState
 }//END class Player
 

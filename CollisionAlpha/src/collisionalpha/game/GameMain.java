@@ -5,8 +5,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 public class GameMain
 {
-	public static final int CONFIG_HEIGHT = 800;
-	public static final int CONFIG_WIDTH = 1280;
+	public static final int CONFIG_HEIGHT = 600;
+	public static final int CONFIG_WIDTH = 960;
 	
 	public static void main(String[] args)
 	{

@@ -6,13 +6,27 @@ import java.util.Iterator;
 
 import collisionalpha.game.controls.Controllable;
 import collisionalpha.game.objects.GameObject;
+import collisionalpha.game.objects.Player;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Room implements Controllable
 {
-	ArrayList<GameObject> objects = new ArrayList<GameObject>();
+	/* Background */
+	private Texture background;
+	
+	/* Objects */
+	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
+	private Player player;
 
+	/* Constructor */
+	public Room(Texture background, Player player)
+	{
+		this.background = background;
+		this.player = player;
+	}//END Room
+	
 	/* Object Management */
 	/**
 	 * Adds an object to the Room's list of objects.
@@ -26,16 +40,28 @@ public class Room implements Controllable
 	
 	/* Input */
 	@Override
-	public void input_touch(int x, int y, int pointer, int button)
+	public void input_touchDown(int x, int y, int pointer, int button)
 	{
 		Iterator<GameObject> iter = this.objects.iterator();
+		
+		GameObject target = null;
 		while(iter.hasNext())
 		{
 			GameObject obj = iter.next();
-			obj.touch(x, y);
+			boolean touchedObject = obj.touch(x, y);
+			if(touchedObject && (target == null || obj.get_position().dst(x,y) < target.get_position().dst(x,y)))
+			{
+				target = obj;
+			}//fi
 		}//elihw
-		
+		this.player.input_touchDown(x, y, pointer, button, target);
 	}//END input_touch
+	
+	@Override
+	public void input_touchUp(int x, int y, int pointer, int button)
+	{
+		this.player.input_touchUp(x, y, pointer, button);
+	}//END input_touchUp
 	
 	/* Update */
 	/**
@@ -58,6 +84,9 @@ public class Room implements Controllable
 	/* Draw */
 	public void render(SpriteBatch spritebatch)
 	{
+		//Render Background
+		spritebatch.draw(this.background, 0, 0);
+		
 		//Render Objects
 		Iterator<GameObject> iter = this.objects.iterator();
 		while(iter.hasNext())
