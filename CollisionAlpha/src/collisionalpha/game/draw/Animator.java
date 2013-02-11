@@ -136,7 +136,7 @@ public class Animator
 	 * 
 	 * @param animationID the ID of the animation.
 	 */
-	public void set_amimation(int animationID)
+	public void set_animation(int animationID)
 	{
 		if(this.current_animation != null)
 		{

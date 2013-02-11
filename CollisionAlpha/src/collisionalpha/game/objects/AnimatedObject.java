@@ -78,7 +78,7 @@ public class AnimatedObject extends GameObject
 	 */
 	public void set_animation(int animationID)
 	{
-		this.animator.set_amimation(animationID);
+		this.animator.set_animation(animationID);
 		this.animationSet = true;
 	}//END set_animationStart
 	
