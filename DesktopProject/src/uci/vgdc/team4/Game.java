@@ -4,6 +4,7 @@ package uci.vgdc.team4;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Random;
 
 import collisionalpha.game.objects.GameObject;
 
@@ -25,6 +26,7 @@ public class Game implements ApplicationListener{
 	SpriteBatch spriteBatch;
 	ArrayList<Enemy> Enemies = new ArrayList<Enemy>();
 	ArrayList<XP> XP = new ArrayList<XP>();
+	Random r = new Random();
 	
 	@Override
 	public void create() {		
@@ -36,13 +38,9 @@ public class Game implements ApplicationListener{
 				new Sprite(new Texture(Gdx.files.internal("data/bama.jpg"))), 50, 50);
 		b = new Box(0, 0, new Vector2(400, 400), new Vector2(0, 0), new Sprite(new Texture("data/box.png")), 0, 0);
 		m = new Map(new Texture(Gdx.files.internal("data/back.jpg")), this, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		Enemy e = new Enemy(1, new Sprite(new Texture(Gdx.files.internal("data/enemy.png"))), 41, 43, null, b);
-		Enemies.add(e);
 		Controller controller = new Controller(Gdx.graphics.getHeight());
 		controller.addControllable(p);
 		Gdx.input.setInputProcessor(controller);
-		
-		Gdx.app.log("create()", "I CAN DRAW DOG");
 	}
 
 	@Override
@@ -50,6 +48,8 @@ public class Game implements ApplicationListener{
 		// TODO Auto-generated method stub
 		effect.dispose();
 		b.dispose();
+		p.dispose();
+		
 	}
 
 	@Override
@@ -92,6 +92,8 @@ public class Game implements ApplicationListener{
 		m.render(sprites);
 		b.render(sprites);	
 		p.render(sprites);
+		spawnMonsters();
+		
 		for(Enemy e : Enemies){
 			e.render(sprites);
 			e.update(Gdx.graphics.getDeltaTime(), new ArrayList<GameObject>());
@@ -101,13 +103,24 @@ public class Game implements ApplicationListener{
 		p.update(dt);
 		m.update(dt);
 		
-		
-		
-		
 		if(Gdx.input.justTouched()){
 			effect.play(.7f);
-		}
+		}		
+	}
+	
+	public void spawnMonsters(){
 		
+		if(Enemies.size() < 5){
+			
+			boolean top = r.nextBoolean();
+			boolean side = r.nextBoolean();
+			int xSpawn = (top ? (side ? -100 : Gdx.graphics.getWidth() + 100) : r.nextInt(Gdx.graphics.getWidth()));
+			int ySpawn = (top ? r.nextInt(Gdx.graphics.getHeight()) : (side ? -100 : Gdx.graphics.getHeight() + 100));
+			Sprite enemy = new Sprite(new Texture(Gdx.files.internal("data/enemy.png")));
+			int[] arr = new int[2];
+			Enemies.add(new Enemy(1, enemy, (int)enemy.getWidth() / 3, (int)enemy.getHeight(), arr, b));
+			Enemies.get(Enemies.size() - 1).set_position(xSpawn, ySpawn);
+		}
 	}
 
 	@Override
