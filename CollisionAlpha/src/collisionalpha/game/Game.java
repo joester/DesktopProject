@@ -1,5 +1,6 @@
 package collisionalpha.game;
 
+import java.util.Random;
 
 import collisionalpha.game.controls.Controller;
 import collisionalpha.game.objects.Enemy;
@@ -25,6 +26,11 @@ public class Game implements ApplicationListener
 	Player testobj;
 	Room testroom;
 	int[] testcolliders = {1,2};
+	float time = 0;
+	GameObject worldbox;
+	float rate = 2;
+	float wait = rate;
+	Random generator = new Random();
 	
 	/* Controls */
 	private Controller controller = new Controller();
@@ -41,6 +47,7 @@ public class Game implements ApplicationListener
 		testobj = new Player(0, 90, 90, 1, 300, 32, 20, 0, -15, testcolliders, true, 60, true, 32, 50, testure, 32, 50);
 		
 		GameObject box = new GameObject(1,400,400,1,300,58,58,0,0,testcolliders,true,60,true,64,64,testure3,64,64);
+		worldbox = box;
 		GameObject blocker = new GameObject(10,200,200,1,300,64,64,0,0,testcolliders,true,60,true,64,64,testure2,64,64);
 		GameObject enemy1 = new Enemy(box,3, 500, 400, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
 		GameObject enemy2 = new Enemy(box,3, 500, 500, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
@@ -85,6 +92,15 @@ public class Game implements ApplicationListener
 	public void render() {
 		/* Get DT */
 		float dt = Gdx.graphics.getDeltaTime();
+		time += dt;
+		System.out.println("Total Time: " + time);
+		if (time > wait)
+		{
+			System.out.println("New Enemy Spawned");
+			wait = time + rate;
+			GameObject enemy = new Enemy(worldbox,3, 500, 400, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
+			testroom.add_object(enemy);
+		}
 		
 		/* Update */
 		testroom.update(dt);
