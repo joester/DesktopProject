@@ -28,6 +28,7 @@ public class GameObject
 	/* Position and Movement */
 	protected Vector2 position; //The x and y position of the object.
 	protected Vector2 velocity; //The velocity at which the object is moving at.
+	private int hp;
 	
 	/* Physics */
 	protected float mass; //How massive the object is.
@@ -70,8 +71,9 @@ public class GameObject
 	 * @param sprites the set of sprites to be used in drawing the object
 	 * @param srcWidth the width of a sprite
 	 * @param srcHeight the height of a sprite
+	 * @param hp the hitpoints of the GameObject object. Mainly only used in Enemy and Box
 	 */
-	public GameObject(int objectID, float posX, float posY, float mass, float friction, float hitWidth, float hitHeight, float hitX, float hitY, int[] colliders, boolean isSolid, float touchRadius, boolean isTouchable, float drawWidth, float drawHeight, Texture sprites, int srcWidth, int srcHeight)
+	public GameObject(int objectID, float posX, float posY, float mass, float friction, float hitWidth, float hitHeight, float hitX, float hitY, int[] colliders, boolean isSolid, float touchRadius, boolean isTouchable, float drawWidth, float drawHeight, Texture sprites, int srcWidth, int srcHeight, int hp)
 	{
 		/* ID */
 		this.objectID = objectID;
@@ -83,6 +85,8 @@ public class GameObject
 		/* Physics */
 		this.mass = mass;
 		this.friction = friction;
+		//HP set here for now
+		this.setHp(hp);	
 
 		/* Collision */
 		this.hitWidth = hitWidth;
@@ -672,6 +676,14 @@ public class GameObject
 		System.out.println("Can't touch " + this + "!");
 		//Override this function.
 	}//END behavior_touched
+
+	public int getHp() {
+		return hp;
+	}
+
+	public void setHp(int hp) {
+		this.hp = hp;
+	}
 }//END class GameObject
 
 //EOF

@@ -1,5 +1,6 @@
 package collisionalpha.game.objects.actions;
 
+import collisionalpha.game.objects.Device;
 import collisionalpha.game.objects.Enemy;
 import collisionalpha.game.objects.GameObject;
 
@@ -40,10 +41,15 @@ public class Attack extends Action
 			float direction = attackType;
 			target.set_velocity((float)(400 * Math.cos(direction)), (float)(400 * Math.sin(direction)));
 		
+			
+			
 			if(target.getID() == 3)
 			{
 				Enemy enemy = (Enemy)this.target;
 				enemy.stun();
+			}
+			if(target.getID() == 1){
+				this.target.setHp(this.target.getHp() - 1);
 			}
 			this.terminate();
 		}//fi

@@ -16,13 +16,17 @@ public class Device extends GameObject {
 			float drawHeight, Texture sprites, int srcWidth, int srcHeight)
 	 {
 		super(objectID, posX, posY, mass, friction, hitWidth, hitHeight, hitX, hitY, colliders,
-				isSolid, touchRadius, isTouchable, drawWidth, drawHeight, sprites, srcWidth, srcHeight);
+				isSolid, touchRadius, isTouchable, drawWidth, drawHeight, sprites, srcWidth, srcHeight, 10);
 		
 		
 	}
 	
 	@Override
 	public void update(float dt, ArrayList<GameObject> objects) {
+		
+		if(this.getHp() == 0){
+			return;
+		}
 		
 		super.update(dt, objects);
 		if(this.get_positionX() <= this.getDrawWidth()/ 2)

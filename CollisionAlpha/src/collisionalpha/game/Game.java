@@ -31,6 +31,7 @@ public class Game implements ApplicationListener
 	float rate = 2;
 	float wait = rate;
 	Random generator = new Random();
+	private int enemyCount;
 	
 	/* Controls */
 	private Controller controller = new Controller();
@@ -46,24 +47,25 @@ public class Game implements ApplicationListener
 		backtest = new Texture(Gdx.files.internal("data/backgrounds/grass.png"));
 		testobj = new Player(0, 90, 90, 1, 300, 32, 20, 0, -15, testcolliders, true, 60, true, 32, 50, testure, 32, 50);
 		
-		GameObject box = new GameObject(1,400,400,1,300,58,58,0,0,testcolliders,true,60,true,64,64,testure3,64,64);
+		GameObject box = new GameObject(1,400,400,1,300,58,58,0,0,testcolliders,true,60,true,64,64,testure3,64,64, 10);
 		worldbox = box;
-		GameObject blocker = new GameObject(10,200,200,1,300,64,64,0,0,testcolliders,true,60,true,64,64,testure2,64,64);
-		GameObject enemy1 = new Enemy(box,3, 500, 400, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
-		GameObject enemy2 = new Enemy(box,3, 500, 500, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
-		GameObject enemy3 = new Enemy(box,3, 500, 600, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
-		GameObject enemy4 = new Enemy(box,3, 500, 300, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
-		GameObject enemy5 = new Enemy(box,3, 500, 200, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
+		GameObject blocker = new GameObject(10,200,200,1,300,64,64,0,0,testcolliders,true,60,true,64,64,testure2,64,64, 1);
+		//GameObject enemy1 = new Enemy(box,3, 500, 400, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
+		//GameObject enemy2 = new Enemy(box,3, 500, 500, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
+		//GameObject enemy3 = new Enemy(box,3, 500, 600, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
+		//GameObject enemy4 = new Enemy(box,3, 500, 300, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
+		//GameObject enemy5 = new Enemy(box,3, 500, 200, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
 		
 		testroom = new Room(backtest, testobj);
 		testroom.add_object(box);
 
+		/*
 		testroom.add_object(enemy1);
 		testroom.add_object(enemy2);
 		testroom.add_object(enemy3);
 		testroom.add_object(enemy4);
 		testroom.add_object(enemy5);
-		
+		*/
 		testroom.add_object(testobj);
 		
 		this.controller.add_controllable(testroom);
@@ -87,19 +89,28 @@ public class Game implements ApplicationListener
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	private GameObject addMonster()
+	{
+		boolean top = generator.nextBoolean();
+		boolean side = generator.nextBoolean();
+		float xSpawn = (top ? (side ? 0 : Gdx.graphics.getWidth()) : generator.nextInt(Gdx.graphics.getWidth()));
+		float ySpawn = (top ? generator.nextInt(Gdx.graphics.getHeight()) : (side ? 0 : Gdx.graphics.getHeight()));
+		GameObject enemy = new Enemy(worldbox,3, xSpawn, ySpawn, 0.001f, 300, 32, 32, 0, 0, 
+				testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
+		return enemy;
+	}
 	@Override
 	public void render() {
 		/* Get DT */
 		float dt = Gdx.graphics.getDeltaTime();
 		time += dt;
-		System.out.println("Total Time: " + time);
-		if (time > wait)
+		//System.out.println("Total Time: " + time);
+		if (time > wait && testroom.monsterCount < 10)
 		{
 			System.out.println("New Enemy Spawned");
 			wait = time + rate;
-			GameObject enemy = new Enemy(worldbox,3, 500, 400, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
-			testroom.add_object(enemy);
+			testroom.add_object(addMonster());
 		}
 		
 		/* Update */

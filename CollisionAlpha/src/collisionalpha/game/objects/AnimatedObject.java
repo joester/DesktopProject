@@ -40,7 +40,7 @@ public class AnimatedObject extends GameObject
 	 */
 	public AnimatedObject(int objectID, float posX, float posY, float mass, float friction, float hitWidth, float hitHeight, float hitX, float hitY, int[] colliders, boolean isSolid, float touchRadius, boolean isTouchable, float drawWidth, float drawHeight, Texture sprites, int srcWidth, int srcHeight)
 	{
-		super(objectID, posX, posY, mass, friction, hitWidth, hitHeight, hitX, hitY, colliders, isSolid, touchRadius, isTouchable, drawWidth, drawHeight, sprites, srcWidth, srcHeight);
+		super(objectID, posX, posY, mass, friction, hitWidth, hitHeight, hitX, hitY, colliders, isSolid, touchRadius, isTouchable, drawWidth, drawHeight, sprites, srcWidth, srcHeight, 1);
 		
 		this.animator = new Animator(this.sprite, srcWidth, srcHeight);
 	}//END AnimatedObject
