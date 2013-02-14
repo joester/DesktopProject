@@ -31,7 +31,8 @@ public class Game implements ApplicationListener
 	float rate = 2;
 	float wait = rate;
 	Random generator = new Random();
-	private int enemyCount;
+	boolean gameIsOver;
+	GameOverState gos;
 	
 	/* Controls */
 	private Controller controller = new Controller();
@@ -46,7 +47,7 @@ public class Game implements ApplicationListener
 		testure4 = new Texture(Gdx.files.internal("data/redblock.png"));
 		backtest = new Texture(Gdx.files.internal("data/backgrounds/grass.png"));
 		testobj = new Player(0, 90, 90, 1, 300, 32, 20, 0, -15, testcolliders, true, 60, true, 32, 50, testure, 32, 50);
-		
+		gameIsOver = false;
 		GameObject box = new GameObject(1,400,400,1,300,58,58,0,0,testcolliders,true,60,true,64,64,testure3,64,64, 10);
 		worldbox = box;
 		GameObject blocker = new GameObject(10,200,200,1,300,64,64,0,0,testcolliders,true,60,true,64,64,testure2,64,64, 1);
@@ -55,7 +56,7 @@ public class Game implements ApplicationListener
 		//GameObject enemy3 = new Enemy(box,3, 500, 600, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
 		//GameObject enemy4 = new Enemy(box,3, 500, 300, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
 		//GameObject enemy5 = new Enemy(box,3, 500, 200, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
-		
+		gos = new GameOverState(backtest);
 		testroom = new Room(backtest, testobj);
 		testroom.add_object(box);
 
@@ -102,6 +103,25 @@ public class Game implements ApplicationListener
 	}
 	@Override
 	public void render() {
+		
+		if(gameIsOver){
+			gameIsOver = gos.update();
+			
+			SpriteBatch spritebatch = new SpriteBatch();
+			spritebatch.begin();
+			gos.render(spritebatch);
+			spritebatch.end();
+			spritebatch.dispose();
+			if(!gameIsOver){
+				create();
+				System.out.println("gets here");
+			}
+			else{
+				return;
+			}
+			
+		}
+		System.out.println("and here");
 		/* Get DT */
 		float dt = Gdx.graphics.getDeltaTime();
 		time += dt;
@@ -114,7 +134,7 @@ public class Game implements ApplicationListener
 		}
 		
 		/* Update */
-		testroom.update(dt);
+		gameIsOver = testroom.update(dt);
 		
 		/* Render */
 		//Clear

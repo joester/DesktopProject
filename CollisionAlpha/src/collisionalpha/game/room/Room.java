@@ -70,22 +70,26 @@ public class Room implements Controllable
 	 * 
 	 * @param dt the difference in time between this and the last cycle
 	 */
-	public void update(float dt)
+	public boolean update(float dt)
 	{
 		//Update Objects
 		Iterator<GameObject> iter = this.objects.iterator();
 		monsterCount = objects.size() - 2;
+		boolean gameIsLost = false;
 		while(iter.hasNext())
 		{
 			GameObject obj = iter.next();
 			obj.update(dt, this.objects);
 			obj.endUpdate();
 			if(obj.getID() == 1)
-				System.out.println(obj.getHp());
+				if(obj.getHp() == 0){
+					gameIsLost = true;
+				}
 			if(obj.getHp() == 0){
 				iter.remove();
-			}
+			}			
 		}//elihw
+		return gameIsLost;
 	}//END Update
 	
 	/* Draw */
