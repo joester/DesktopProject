@@ -111,6 +111,11 @@ public class GameObject
 		this.sprite = new Sprite(sprites, srcWidth, srcHeight);
 	}//END GameObject
 	
+	public GameObject(Texture t)
+	{
+		this(99, 0f, 0f, 100f, 100f,0f,0f,0f,0f,new int[0],false,0f,false,0f,0f,t,0,0,0);
+		
+	}
 	/* Identification */
 	/**
 	 * @return the object's ID.

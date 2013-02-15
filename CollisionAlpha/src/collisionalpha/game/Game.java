@@ -3,7 +3,9 @@ package collisionalpha.game;
 import java.util.Random;
 
 import collisionalpha.game.controls.Controller;
+import collisionalpha.game.objects.Device;
 import collisionalpha.game.objects.Enemy;
+import collisionalpha.game.objects.Exp;
 import collisionalpha.game.objects.GameObject;
 import collisionalpha.game.objects.Player;
 import collisionalpha.game.room.Room;
@@ -33,7 +35,8 @@ public class Game implements ApplicationListener
 	Random generator = new Random();
 	boolean gameIsOver;
 	GameOverState gos;
-	
+	Exp exp;
+	Texture t;
 	/* Controls */
 	private Controller controller = new Controller();
 	
@@ -46,9 +49,10 @@ public class Game implements ApplicationListener
 		testure3 = new Texture(Gdx.files.internal("data/greenball.png"));
 		testure4 = new Texture(Gdx.files.internal("data/redblock.png"));
 		backtest = new Texture(Gdx.files.internal("data/backgrounds/grass.png"));
+		t = new Texture(Gdx.files.internal("data/xp.png"));
 		testobj = new Player(0, 90, 90, 1, 300, 32, 20, 0, -15, testcolliders, true, 60, true, 32, 50, testure, 32, 50);
 		gameIsOver = false;
-		GameObject box = new GameObject(1,400,400,1,300,58,58,0,0,testcolliders,true,60,true,64,64,testure3,64,64, 10);
+		Device box = new Device(1,400,400,1,300,58,58,0,0,testcolliders,true,60,true,64,64,testure3,64,64);
 		worldbox = box;
 		GameObject blocker = new GameObject(10,200,200,1,300,64,64,0,0,testcolliders,true,60,true,64,64,testure2,64,64, 1);
 		//GameObject enemy1 = new Enemy(box,3, 500, 400, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
@@ -58,6 +62,8 @@ public class Game implements ApplicationListener
 		//GameObject enemy5 = new Enemy(box,3, 500, 200, 0.001f, 300, 32, 32, 0, 0, testcolliders, true, 60, true, 32, 32, testure4, 32, 32);
 		gos = new GameOverState(backtest);
 		testroom = new Room(backtest, testobj);
+		exp = new Exp(box, testroom,  new Texture(Gdx.files.internal("data/xp.png")));
+		testroom.add_object(exp);
 		testroom.add_object(box);
 
 		/*
@@ -126,15 +132,16 @@ public class Game implements ApplicationListener
 		float dt = Gdx.graphics.getDeltaTime();
 		time += dt;
 		//System.out.println("Total Time: " + time);
-		if (time > wait && testroom.monsterCount < 10)
-		{
-			System.out.println("New Enemy Spawned");
-			wait = time + rate;
-			testroom.add_object(addMonster());
-		}
+//		if (time > wait && testroom.monsterCount < 10)
+//		{
+//			System.out.println("New Enemy Spawned");
+//			wait = time + rate;
+//			testroom.add_object(addMonster());
+//		}
 		
 		/* Update */
 		gameIsOver = testroom.update(dt);
+		exp.update(dt);
 		
 		/* Render */
 		//Clear
@@ -145,6 +152,8 @@ public class Game implements ApplicationListener
 		SpriteBatch spritebatch = new SpriteBatch();
 		spritebatch.begin();
 		testroom.render(spritebatch);
+		spritebatch.draw(t, 100, 100);
+		//exp.render(spritebatch);
 		spritebatch.end();
 		spritebatch.dispose();
 	}//END render

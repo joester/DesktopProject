@@ -29,24 +29,24 @@ public class Device extends GameObject {
 		}
 		
 		super.update(dt, objects);
-		if(this.get_positionX() <= this.getDrawWidth()/ 2)
+		if(this.get_positionX() <= 1)
 		{
-			this.set_position(this.get_hitWidth()/2 + 2, this.get_positionY());
+			this.set_position(2, this.get_positionY());
 			this.add_velocity(200, 0);
 		}
-		if(this.get_positionY() <= this.getDrawHeight()/2){
-			this.set_position(this.get_positionX(), this.getDrawHeight()/2 + 2);
+		if(this.get_positionY() <= 1){
+			this.set_position(this.get_positionX(), 2);
 			this.add_velocity(0, 200 );
 			//System.out.println("under the line");
 		}
-		if(this.get_positionX() >= GameMain.CONFIG_WIDTH - this.getDrawWidth()/2 ){
-			this.set_position(GameMain.CONFIG_WIDTH - this.getDrawWidth()/2 - 1, this.get_positionY());
+		if(this.get_positionX() >= GameMain.CONFIG_WIDTH - this.getDrawWidth() ){
+			this.set_position(GameMain.CONFIG_WIDTH - this.getDrawWidth() - 1, this.get_positionY());
 			this.add_velocity(-200, 0);
 		}
 		
-		if(this.get_positionY() >= GameMain.CONFIG_HEIGHT - this.getDrawHeight()/2)
+		if(this.get_positionY() >= GameMain.CONFIG_HEIGHT - this.getDrawHeight())
 		{
-			this.set_position(this.get_positionX(), GameMain.CONFIG_HEIGHT - this.getDrawHeight()/2 - 1);
+			this.set_position(this.get_positionX(), GameMain.CONFIG_HEIGHT - this.getDrawHeight() - 1);
 			this.add_velocity(0, -200);
 		}
 	}
